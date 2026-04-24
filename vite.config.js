@@ -11,4 +11,10 @@ const GH_PAGES_BASE = '/-Users-kenneth-Desktop-/'
 export default defineConfig(({ mode }) => ({
   base: mode === 'production' ? GH_PAGES_BASE : '/',
   plugins: [react(), tailwindcss()],
+  // 必須連埠號一齊打，例如 http://127.0.0.1:5173/（睇終端實際埠）。單止 127.0.0.1 唔係 Vite。
+  server: {
+    open: true,
+    port: 5173,
+    strictPort: false,
+  },
 }))

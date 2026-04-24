@@ -1,16 +1,37 @@
-# React + Vite
+# 粵語兒歌
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+小學生向粵語兒歌列表（React + Vite）。
 
-Currently, two official plugins are available:
+## 開發（唔好用 Live Server 開根目錄）
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+呢個係 **Vite + React** 專案，一定要用 Vite 編譯 JSX：
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+喺瀏覽器開終端顯示嘅網址，**一定要包埠號**，例如 `http://localhost:5173/` 或 `http://127.0.0.1:5174/`（以終端為準）。  
+只打 `127.0.0.1` 唔打 `:5173` 之類 → 連唔到 Vite → **白屏**。
 
-## Expanding the ESLint configuration
+**唔好用** VS Code「Live Server」去開專案 **根目錄** 嘅 `index.html`——佢唔識編譯 `/src/main.jsx`，會 **白屏**。
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 預覽打包後嘅網頁
+
+- 同 GitHub Pages 一樣嘅路徑：`npm run build` 然後 `npm run preview`，再開提示嘅網址（路徑會包倉庫名）。
+- 想喺本機用 **相對路徑**（例如用 Live Server 只開 `dist` 資料夾）：
+
+```bash
+npm run build:local
+npm run preview:local
+```
+
+或用任何靜態伺服器指住 `dist/`（用 `build:local` 產出）。
+
+## 部署到 GitHub Pages
+
+```bash
+npm run deploy
+```
+
+`npm run build` 會用倉庫路徑 `/-Users-kenneth-Desktop-/`；本機測 static 請用上面 `build:local`。

@@ -7,7 +7,7 @@ import Songs from './pages/Songs'
 
 function App() {
   return (
-    <HashRouter>
+    <HashRouter basename={import.meta.env.BASE_URL}>
       <PlayerProvider songs={songsData}>
         <Routes>
           <Route path="/" element={<Layout />}>

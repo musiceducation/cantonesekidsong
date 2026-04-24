@@ -3,9 +3,12 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
-// Relative asset URLs so the built app still loads if dist is opened as a file
-// or is hosted under a subpath without server rewrites; pair with HashRouter in App.
-export default defineConfig({
-  base: './',
+// GitHub project page: https://<user>.github.io/<repo>/
+// A relative base ("./") often breaks: visiting .../repo (no trailing slash) resolves
+// ./assets/... to the site root, not the repo — JS never loads. Production must use the repo path.
+const GH_PAGES_BASE = '/-Users-kenneth-Desktop-/'
+
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? GH_PAGES_BASE : '/',
   plugins: [react(), tailwindcss()],
-})
+}))

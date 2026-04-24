@@ -1,4 +1,6 @@
-export default function SectionTitle({ id, kicker, title, description }) {
+import { memo } from 'react'
+
+function SectionTitle({ id, kicker, title, description }) {
   return (
     <div className="space-y-1">
       {kicker ? (
@@ -18,3 +20,5 @@ export default function SectionTitle({ id, kicker, title, description }) {
     </div>
   )
 }
+
+export default memo(SectionTitle)

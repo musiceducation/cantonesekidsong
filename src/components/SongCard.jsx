@@ -1,7 +1,9 @@
+import { memo, useCallback } from 'react'
 import { getCategoryPillClass } from '../lib/categoryStyles'
 
-export default function SongCard({ song, onPlay, index, total }) {
+function SongCard({ song, onPlay, index, total }) {
   const catClass = getCategoryPillClass(song.category)
+  const handlePlay = useCallback(() => onPlay?.(song), [onPlay, song])
 
   return (
     <article
@@ -16,7 +18,7 @@ export default function SongCard({ song, onPlay, index, total }) {
         </span>
         <button
           type="button"
-          onClick={() => onPlay?.(song)}
+          onClick={handlePlay}
           className="relative h-full w-full p-0 text-left"
           aria-label={`播「${song.title}」的影片，第 ${index} 首，共 ${total} 首`}
         >
@@ -51,7 +53,7 @@ export default function SongCard({ song, onPlay, index, total }) {
         </span>
         <button
           type="button"
-          onClick={() => onPlay?.(song)}
+          onClick={handlePlay}
           className="mt-1 flex min-h-11 w-full max-w-full items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-coral-400 to-amber-300/90 py-2.5 text-sm font-extrabold text-ink-800 shadow-bubble transition hover:brightness-105 active:translate-y-0.5 sm:w-fit sm:px-5"
         >
           <span aria-hidden>▶</span>
@@ -61,3 +63,5 @@ export default function SongCard({ song, onPlay, index, total }) {
     </article>
   )
 }
+
+export default memo(SongCard)

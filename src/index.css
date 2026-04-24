@@ -59,9 +59,43 @@
     animation: ui-backdrop-in 0.2s ease-out both;
   }
 
+  @keyframes ui-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes ui-wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-5deg);
+    }
+    75% {
+      transform: rotate(5deg);
+    }
+  }
+
+  .animate-ui-float {
+    animation: ui-float 3s ease-in-out infinite;
+  }
+
+  .animate-ui-wiggle {
+    animation: ui-wiggle 1.6s ease-in-out infinite;
+    transform-origin: 50% 70%;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-ui-fade-in,
-    .animate-ui-backdrop-in {
+    .animate-ui-backdrop-in,
+    .animate-ui-float,
+    .animate-ui-wiggle {
       animation: none;
     }
   }
@@ -78,12 +112,21 @@
 @layer base {
   body {
     @apply m-0 min-h-svh font-sans text-ink-800 antialiased;
+    background-color: var(--color-cream-50);
     background:
       radial-gradient(1200px 800px at 10% 0%, rgba(255, 196, 168, 0.35) 0%, transparent 55%),
       radial-gradient(900px 600px at 90% 20%, rgba(184, 224, 255, 0.4) 0%, transparent 50%),
       radial-gradient(700px 500px at 50% 100%, rgba(212, 196, 255, 0.25) 0%, transparent 45%),
       linear-gradient(165deg, var(--color-cream-50) 0%, #fff5f0 40%, #eef6ff 72%, var(--color-cream-100) 100%);
-    background-attachment: fixed;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    body {
+      background-attachment: fixed;
+    }
   }
 
   #root {

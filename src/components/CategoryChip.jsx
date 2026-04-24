@@ -1,6 +1,7 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function CategoryChip({ label, active = false, to, onClick, ...rest }) {
+function CategoryChip({ label, active = false, to, onClick, ...rest }) {
   const className = [
     'inline-flex min-h-11 min-w-11 select-none items-center justify-center rounded-full border-2 px-4 py-2 text-sm font-bold transition will-change-transform md:text-base',
     'active:scale-[0.98]',
@@ -34,3 +35,5 @@ export default function CategoryChip({ label, active = false, to, onClick, ...re
     </button>
   )
 }
+
+export default memo(CategoryChip)

@@ -1,4 +1,4 @@
-import { useMemo, useId } from 'react'
+import { useCallback, useDeferredValue, useId, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { usePlayer } from '../hooks/usePlayer'
 import SearchBar from '../components/SearchBar'
@@ -18,7 +18,9 @@ export default function Songs() {
   const { allSongs, openAtIndex } = usePlayer()
 
   const q = params.get('q') ?? ''
+  const deferredQ = useDeferredValue(q)
   const category = params.get('category') ?? ALL
+  const selectedCategory = params.get('category')
 
   const categoryList = useMemo(() => {
     const s = new Set()
@@ -31,35 +33,44 @@ export default function Songs() {
     if (category && category !== ALL) {
       list = list.filter((g) => g.category === category)
     }
-    if (q) {
-      const n = normalize(q)
+    if (deferredQ) {
+      const n = normalize(deferredQ)
       list = list.filter((g) => normalize(g.title).includes(n))
     }
     return list
-  }, [allSongs, category, q])
+  }, [allSongs, category, deferredQ])
 
-  const setQuery = (value) => {
-    const p = new URLSearchParams(params)
-    if (value) p.set('q', value)
-    else p.delete('q')
-    setParams(p, { replace: true })
-  }
+  const setQuery = useCallback(
+    (value) => {
+      const p = new URLSearchParams(params)
+      if (value) p.set('q', value)
+      else p.delete('q')
+      setParams(p, { replace: true })
+    },
+    [params, setParams],
+  )
 
-  const setCategory = (next) => {
-    const p = new URLSearchParams(params)
-    if (next && next !== ALL) p.set('category', next)
-    else p.delete('category')
-    setParams(p, { replace: true })
-  }
+  const setCategory = useCallback(
+    (next) => {
+      const p = new URLSearchParams(params)
+      if (next && next !== ALL) p.set('category', next)
+      else p.delete('category')
+      setParams(p, { replace: true })
+    },
+    [params, setParams],
+  )
 
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     setParams({}, { replace: true })
-  }
+  }, [setParams])
 
-  const handlePlay = (song) => {
-    const i = filtered.findIndex((s) => s.id === song.id)
-    if (i >= 0) openAtIndex(filtered, i)
-  }
+  const handlePlay = useCallback(
+    (song) => {
+      const i = filtered.findIndex((s) => s.id === song.id)
+      if (i >= 0) openAtIndex(filtered, i)
+    },
+    [filtered, openAtIndex],
+  )
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -68,10 +79,10 @@ export default function Songs() {
         description="用搜尋同分類搵歌，撳相就播片～"
       />
 
-      <div className="rounded-3xl border-2 border-white/60 bg-white/70 p-4 shadow-card ring-1 ring-ink-800/[0.04] sm:p-5">
+      <div className="rounded-3xl border-2 border-white/60 bg-gradient-to-r from-white/80 to-cream-50/90 p-4 shadow-card ring-1 ring-ink-800/[0.04] sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <SearchBar id={searchId} value={q} onChange={setQuery} />
-          <p className="shrink-0 text-center text-sm font-extrabold text-ink-800/50 sm:text-left">
+          <p className="shrink-0 text-center text-sm font-extrabold text-ink-800/55 sm:text-left">
             顯示{' '}
             <span className="tabular-nums text-ink-800">{filtered.length}</span> 首
           </p>
@@ -79,7 +90,7 @@ export default function Songs() {
       </div>
 
       <div className="space-y-2" role="group" aria-label="兒歌分類">
-        <p className="px-0.5 text-sm font-extrabold text-ink-800/50">分類</p>
+        <p className="px-0.5 text-sm font-extrabold text-ink-800/55">分類</p>
         <div className="flex flex-wrap gap-2 sm:gap-2.5">
           {categoryList.map((c) => (
             <CategoryChip
@@ -87,8 +98,8 @@ export default function Songs() {
               label={c}
               active={
                 c === ALL
-                  ? !params.get('category')
-                  : params.get('category') === c
+                  ? !selectedCategory
+                  : selectedCategory === c
               }
               onClick={() => setCategory(c)}
             />
@@ -97,10 +108,7 @@ export default function Songs() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-ink-800/15 bg-white/60 p-8 text-center shadow-inner">
-          <p className="text-3xl" aria-hidden>
-            🧐
-          </p>
+        <div className="flex flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-ink-800/15 bg-white/70 p-8 text-center shadow-inner">
           <p className="max-w-sm text-base font-semibold leading-relaxed text-ink-800/80">
             搵唔到呢隻歌，試下改關鍵字或者揀其他分類～
           </p>

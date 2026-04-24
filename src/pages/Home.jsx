@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { usePlayer } from '../hooks/usePlayer'
 import CategoryChip from '../components/CategoryChip'
@@ -19,10 +19,13 @@ export default function Home() {
     return picks.map((i) => allSongs[i]).filter(Boolean)
   }, [allSongs])
 
-  const handlePlay = (song) => {
-    const i = featured.findIndex((s) => s.id === song.id)
-    if (i >= 0) openAtIndex(featured, i)
-  }
+  const handlePlay = useCallback(
+    (song) => {
+      const i = featured.findIndex((s) => s.id === song.id)
+      if (i >= 0) openAtIndex(featured, i)
+    },
+    [featured, openAtIndex],
+  )
 
   return (
     <div className="space-y-10 sm:space-y-14">
@@ -31,11 +34,11 @@ export default function Home() {
         aria-labelledby="home-hero"
       >
         <div
-          className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-sky-300/35 blur-3xl"
+          className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-sky-300/30 blur-xl sm:h-40 sm:w-40 sm:blur-3xl"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -bottom-8 left-6 h-40 w-40 rounded-full bg-lilac-400/20 blur-3xl"
+          className="pointer-events-none absolute -bottom-8 left-6 h-36 w-36 rounded-full bg-lilac-400/20 blur-xl sm:h-40 sm:w-40 sm:blur-3xl"
           aria-hidden
         />
         <div className="relative z-[1] max-w-2xl">
@@ -46,7 +49,9 @@ export default function Home() {
           >
             哈囉，同學仔！
             <br />
-            <span className="whitespace-nowrap sm:whitespace-normal">一齊聽粵語兒歌啦～</span>
+            <span className="whitespace-nowrap bg-gradient-to-r from-coral-500 via-amber-500 to-lilac-500 bg-clip-text text-transparent sm:whitespace-normal">
+              一齊聽粵語兒歌啦～
+            </span>
           </h1>
           <p className="mt-3 text-base font-semibold leading-relaxed text-ink-800/80 sm:text-lg">
             撳歌卡、睇 YouTube 短片，學廣東話一樣咁簡單、咁開心！
@@ -54,7 +59,7 @@ export default function Home() {
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link
               to="/songs"
-              className="inline-flex min-h-12 min-w-[7.5rem] items-center justify-center rounded-2xl bg-ink-800 px-6 py-2.5 text-base font-extrabold text-cream-50 shadow-bubble transition hover:bg-ink-800/90 active:translate-y-0.5"
+              className="inline-flex min-h-12 min-w-[7.5rem] items-center justify-center rounded-2xl bg-gradient-to-r from-coral-400 to-amber-300 px-6 py-2.5 text-base font-extrabold text-ink-800 shadow-bubble transition hover:brightness-105 active:translate-y-0.5"
             >
               去兒歌列表
             </Link>

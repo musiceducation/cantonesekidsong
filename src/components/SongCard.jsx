@@ -57,7 +57,7 @@ function SongCard({ song, onPlay, index, total }) {
           className="mt-1 flex min-h-11 w-full max-w-full items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-coral-400 to-amber-300/90 py-2.5 text-sm font-extrabold text-ink-800 shadow-bubble transition hover:brightness-105 active:translate-y-0.5 sm:w-fit sm:px-5"
         >
           <span aria-hidden>▶</span>
-          睇兒歌
+          聽兒歌
         </button>
       </div>
     </article>
